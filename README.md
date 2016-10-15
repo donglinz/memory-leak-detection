@@ -18,7 +18,7 @@ Example:
 
 ```
 
-if there exist memory doesn't been freed approprate, the detector will show the infromation in stdout
+if there exist sume memory leak, the detector will show the infromation in stdout
 
 Example:
 
