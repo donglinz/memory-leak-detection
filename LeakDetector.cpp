@@ -14,7 +14,7 @@ typedef struct _MemoryList {
   size_t size;        // size of allocated memory
   bool isArray;       // is a array?
   char *file;         // file location
-  unsigned int line;  // position in file 
+  unsigned int line;  // position in file
 } _MemoryList;
 
 static unsigned long _memory_allocated = 0;
@@ -36,7 +36,7 @@ void *AllocateMemory(size_t _size, bool _array, char *_file, int _line) {
   newElem->size = _size;
   newElem->isArray = _array;
   newElem->file = NULL;
-  
+
   // save file path if exist
   if(_file) {
     newElem->file = (char *)malloc(strlen(_file) + 1);
@@ -52,7 +52,7 @@ void *AllocateMemory(size_t _size, bool _array, char *_file, int _line) {
 
   // calculate the size of memory allocated
   _memory_allocated += _size;
-  
+
   // return the position of memory
   return (char *)newElem + sizeof(_MemoryList);
 }
@@ -66,7 +66,7 @@ void DeleteMemory(void *_ptr, bool _array) {
   currentElem->prev->next = currentElem->next;
   currentElem->next->prev = currentElem->prev;
   _memory_allocated -= currentElem->size;
-  
+
   if(currentElem->file) free(currentElem->file);
   free(currentElem);
 }
@@ -82,6 +82,7 @@ void * operator new[] (size_t _size) {
 void * operator new (size_t _size, char *_file, unsigned int _line) {
   return AllocateMemory(_size, false, _file, _line);
 }
+
 void * operator new[] (size_t _size, char * _file, unsigned int _line) {
   return AllocateMemory(_size, true, _file, _line);
 }
@@ -96,8 +97,8 @@ void operator delete[] (void *_ptr) noexcept {
 
 unsigned int _leak_detector::LeakDetector() noexcept {
   unsigned int count = 0;
-  
-  // foreach object in list, if there is a memory leak, none of 
+
+  // foreach object in list, if there is a memory leak, none of
   // them point to themselves
   _MemoryList *ptr = _root.next;
   while(ptr && ptr != &_root) {
@@ -105,10 +106,10 @@ unsigned int _leak_detector::LeakDetector() noexcept {
       std::cout << "leak[] ";
     else std::cout << "leak   ";
     std::cout << ptr << " size " << ptr->size;
-    
+
     if(ptr->file)
-      std::cout << "(Located in )" << ptr->file << " line " << ptr->line << ")";
-    else 
+      std::cout << " Located in " << ptr->file << " line " << ptr->line;
+    else
       std::cout << "(Cannot find position)";
     std::cout << std::endl;
     ++count;
@@ -119,3 +120,5 @@ unsigned int _leak_detector::LeakDetector() noexcept {
     std::cout << "Total " << count << " leaks, size " << _memory_allocated << "byte." << std::endl;
   return count;
 }
+
+#define new new(__FILE__, __LINE__)

@@ -13,7 +13,8 @@ void * operator new (size_t _size, char *_file, unsigned int _line);
 void * operator new[] (size_t _size, char * _file, unsigned int _line);
 
 #ifndef __NEW_OVERLOAD_IMPLEMENTATION__
-#define new    new(__FILE__, __LINE__)
+//#define new new(__FILE__, __LINE__)
+//printf("ok!\n");
 #endif // __NEW_OVERLOAD_IMPLEMENTATION__
 
 
