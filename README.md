@@ -4,12 +4,12 @@ This is an simple memory leak detector to detect memory leak without modify your
 
 this can detect the memory allocated by operator 'new' of 'new[]' and not be freed by corresponding operator of not be freed appropriate.
 
-you just need to include "LeakDetector.cpp" in your code
+you just need to include "LeakDetector.hpp" in your code
 
 Example:
 
 ```
-#include "LeakDetector.cpp"
+#include "LeakDetector.hpp"
 
 //
 //  your code
